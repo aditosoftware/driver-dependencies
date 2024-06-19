@@ -203,7 +203,7 @@ export const PREDEFINED_DRIVERS = new Map<string, Driver>([
  * @param driver - the driver for which the extraction should be done
  * @returns the extracted database name
  */
-function extractDatabaseNameBySeparator(url: string, driver: Driver): DatabaseNameExtraction {
+export function extractDatabaseNameBySeparator(url: string, driver: Driver): DatabaseNameExtraction {
   // find out where last occurrence of the separator is...
   const separatorIndex = url.lastIndexOf(driver.separator);
 
@@ -225,7 +225,7 @@ function extractDatabaseNameBySeparator(url: string, driver: Driver): DatabaseNa
  * @param databaseName - the name of the database
  * @returns the name of the database with the separator
  */
-function buildDatabaseNameBySeparator(driver: Driver, databaseName: string): string {
+export function buildDatabaseNameBySeparator(driver: Driver, databaseName: string): string {
   return `${driver.separator}${databaseName}`;
 }
 
@@ -236,7 +236,7 @@ function buildDatabaseNameBySeparator(driver: Driver, databaseName: string): str
  * @param oldUrl - the url where the parameters should be extracted
  * @returns the parameters with the separator `?`
  */
-function extractParameters(oldUrl: string): string {
+export function extractParameters(oldUrl: string): string {
   if (oldUrl.includes("?")) {
     return oldUrl.substring(oldUrl.indexOf("?"));
   }
