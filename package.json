@@ -1,0 +1,27 @@
+{
+  "name": "@aditosoftware/driver-dependencies",
+  "version": "1.0.0",
+  "description": "A collection of driver dependencies for various applications",
+  "repository": {
+    "type": "git"
+  },
+  "scripts": {
+    "clean": "rimraf ./out",
+    "compile": "tsc -p ./",
+    "clean-compile": "npm run clean && npm run compile",
+    "pretest": "npm run clean-compile",
+    "test": "mocha ./out/test/**/*.test.js --reporter spec",
+    "coverage": "c8 npm run test"
+  },
+  "devDependencies": {
+    "@aditosoftware/eslint-config-adito-platform": "^1.0.0",
+    "@types/mocha": "^10.0.6",
+    "@types/assert": "^1.5.10",
+    "c8": "^10.1.2",
+    "assert": "^2.1.0",
+    "mocha": "^10.4.0",
+    "rimraf": "^5.0.5",
+    "sinon": "^17.0.1",
+    "typescript": "^5.3.3"
+  }
+}
