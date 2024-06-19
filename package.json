@@ -1,10 +1,16 @@
 {
   "name": "@aditosoftware/driver-dependencies",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A collection of driver dependencies for various applications",
+  "license": "MIT",
   "repository": {
     "type": "git"
   },
+  "main": "out/index.ts",
+  "types": "out/index.d.ts",
+  "files": [
+    "out"
+  ],
   "scripts": {
     "clean": "rimraf ./out",
     "compile": "tsc -p ./",
@@ -21,7 +27,6 @@
     "assert": "^2.1.0",
     "mocha": "^10.4.0",
     "rimraf": "^5.0.5",
-    "sinon": "^17.0.1",
     "typescript": "^5.3.3"
   }
 }
