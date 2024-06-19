@@ -10,35 +10,10 @@ export const NO_PRE_CONFIGURED_DRIVER = "NO_PRE_CONFIGURED_DRIVER";
  */
 export class Driver {
   /**
-   * The class which is needed for creating the Liquibase file.
-   */
-  readonly driverClass: string;
-
-  /**
-   * The url for downloading the driver. This is only used in the prerequisites.
-   */
-  readonly urlForDownload: string;
-
-  /**
-   * The jdbc name of the driver.
-   */
-  readonly jdbcName: string;
-
-  /**
-   * The default port of the driver.
-   */
-  readonly port: number;
-
-  /**
-   * The separator for the jdbc url.
-   */
-  readonly separator: string;
-
-  /**
    * Constructor.
    *
-   * @param pDriverClass - The class which is needed for creating the Liquibase file.
-   * @param pUrlForDownload - The url for downloading the driver. This is only used in the prerequisites.
+   * @param driverClass - The class which is needed for creating the Liquibase file.
+   * @param urlForDownload - The url for downloading the driver. This is only used in the prerequisites.
    * @param jdbcName - The jdbc name of the driver.
    * @param port - The default port of the driver.
    * @param separator - The separator for the jdbc url.
@@ -50,24 +25,15 @@ export class Driver {
    * This should not include the database name, because it will be extracted and added in a other way.
    */
   constructor(
-    pDriverClass: string,
-    pUrlForDownload: string,
-    jdbcName: string,
-    port: number,
-    separator: string,
+    public readonly driverClass: string,
+    public readonly urlForDownload: string,
+    public readonly jdbcName: string,
+    public readonly port: number,
+    public readonly separator: string,
     private readonly extractDatabaseNameFromUrl: (url: string, driver: Driver) => DatabaseNameExtraction,
     private readonly buildDatabaseName: (driver: Driver, databaseName: string) => string,
     private readonly extractParameters: (oldUrl: string) => string
-  ) {
-    this.driverClass = pDriverClass;
-    this.urlForDownload = pUrlForDownload;
-    this.jdbcName = jdbcName;
-    this.port = port;
-    this.separator = separator;
-    this.extractDatabaseNameFromUrl = extractDatabaseNameFromUrl;
-    this.buildDatabaseName = buildDatabaseName;
-    this.extractParameters = extractParameters;
-  }
+  ) {}
 
   /**
    * Extract the url parts of a given url.
