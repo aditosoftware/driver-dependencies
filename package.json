@@ -1,12 +1,12 @@
 {
     "name": "@aditosoftware/driver-dependencies",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "description": "A collection of driver dependencies for various applications",
     "license": "MIT",
     "repository": {
       "type": "git"
     },
-    "main": "out/index.ts",
+    "main": "out/index.js",
     "types": "out/index.d.ts",
     "files": [
       "out"
