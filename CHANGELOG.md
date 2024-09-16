@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and and th
 
 ## [Unreleased]
 
+### Added
+
+- Added devDependency: @types/node
+
 ### Changed
 
 - Upgraded dependencies:
