@@ -12,6 +12,8 @@
     "out"
   ],
   "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "npm run lint -- --fix",
     "clean": "rimraf ./out",
     "compile": "tsc -p ./",
     "clean-compile": "npm run clean && npm run compile",
