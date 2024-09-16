@@ -4,6 +4,16 @@ All notable changes to the "driver-dependencies" dependency will be documented i
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+
+- Upgraded dependencies:
+  - @aditosoftware/eslint-config-adito-platform to latest
+  - @types/mocha to 10.0.8
+  - mocha to 10.7.3
+  - rimraf to 6.0.1
+
 ## 1.0.3
 
 ### Fixed
