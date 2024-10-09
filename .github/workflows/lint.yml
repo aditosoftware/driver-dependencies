@@ -2,7 +2,7 @@ name: ESLint
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
 
 permissions:
@@ -27,10 +27,10 @@ jobs:
 
       - name: Install Coverage Reporters
         run: npm install -g nyc
-          npm install -d mocha-multi-reporters
-          npm install -d mocha-junit-reporter
-          npm install -d mocha-sonarqube-reporter
-      - run: |
+      - name: Install Mocha reporters
+        run: npm install -d mocha-multi-reporters mocha-junit-reporter mocha-sonarqube-reporter
+      - name: create mocha config
+        run: |
           echo '{
             "reporterEnabled": "spec, mocha-junit-reporter, mocha-sonarqube-reporter"
           }' > config.json
@@ -38,11 +38,10 @@ jobs:
       - name: Run tests with coverage
         run: nyc --reporter lcovonly npm run test -- --reporter mocha-multi-reporters  --reporter-options configFile=config.json
 
-
       - name: Analyze with SonarCloud
         uses: SonarSource/sonarcloud-github-action@master
         env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} 
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           # Additional arguments for the SonarScanner CLI
           args:
@@ -51,7 +50,7 @@ jobs:
             -Dsonar.projectKey=aditosoftware_driver-dependencies
             -Dsonar.organization=aditosoftware
             -Dsonar.eslint.reportPaths=eslint-results.json
-            -Dsonar.testExecutionReportPaths=xunit.xml 
+            -Dsonar.testExecutionReportPaths=xunit.xml
             -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
             # Comma-separated paths to directories containing main source files.
             #-Dsonar.sources= # optional, default is project base directory
