@@ -45,7 +45,7 @@ jobs:
         run: npm ci
 
       - name: Run ESLint
-        run: npm run lint --format json --output-file eslint-results.json || true
+        run: npm run lint -- --format json --output-file eslint-results.json || true
 
       - name: Install Coverage Reporters
         run: npm install -g nyc
