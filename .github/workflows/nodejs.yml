@@ -21,44 +21,56 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Check Node.js version
-        run: node -v
 
-      - name: Check npm versions
-        run: npm -v
+      - name: Cache node_modules
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: node_modules-${{ matrix.os }}-node-${{ matrix.node-version }}-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            node_modules-${{ matrix.os }}-node-${{ matrix.node-version }}
 
       - name: Run clean install
         run: npm ci
 
       - name: Run tests
         run: npm test
-        if: matrix.os != 'ubuntu-latest' && matrix.node-version != '22.x'
+
+  sonar:
+    name: Run eslint and sonar scanning
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - run: node -v
+
+      - name: Restore cached node_modules
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: node_modules-ubuntu-latest-node-22.x-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            node_modules-ubuntu-latest-node-22.x
 
       - name: Run ESLint
         run: npm run lint -- --format json --output-file eslint-results.json || true
-        if: matrix.os == 'ubuntu-latest' && matrix.node-version == '22.x'
 
       - name: Install Coverage Reporters
         run: npm install -g nyc
-        if: matrix.os == 'ubuntu-latest' && matrix.node-version == '22.x'
-
       - name: Install Mocha reporters
         run: npm install -d mocha-multi-reporters mocha-junit-reporter mocha-sonarqube-reporter
-        if: matrix.os == 'ubuntu-latest' && matrix.node-version == '22.x'
-
       - name: create mocha config
         run: |
           echo '{
             "reporterEnabled": "spec, mocha-junit-reporter, mocha-sonarqube-reporter"
           }' > config.json
-        if: matrix.os == 'ubuntu-latest' && matrix.node-version == '22.x'
 
       - name: Run tests with coverage
         run: nyc --reporter lcovonly npm run test -- --reporter mocha-multi-reporters  --reporter-options configFile=config.json
-        if: matrix.os == 'ubuntu-latest' && matrix.node-version == '22.x'
 
       - name: Analyze with SonarCloud
-        if: matrix.os == 'ubuntu-latest' && matrix.node-version == '22.x'
         uses: SonarSource/sonarcloud-github-action@master
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
