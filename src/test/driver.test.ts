@@ -111,147 +111,145 @@ suite("url handling", () => {
   /**
    *Tests the url handling of all pre-configured drivers in the `PREDEFINED_DRIVERS` map.
    */
-  suite("url handling of pre-configured drivers", () => {
-    const testCases: TestCase[] = [
-      {
-        driver: "MariaDB",
-        detail: "url with parameters",
-        url: "jdbc:mariadb://127.0.0.1:1234/my_database?user=username&password=password&parameter1=value1&parameter2=value2",
-        oldUrl:
-          "jdbc:mariadb://localhost:7896/old_database?user=username&password=password&parameter1=value1&parameter2=value2",
-      },
-      {
-        driver: "MariaDB",
-        detail: "url without parameters",
-        url: "jdbc:mariadb://127.0.0.1:1234/my_database",
-        oldUrl: "jdbc:mariadb://localhost:7896/old_database",
-      },
-      {
-        driver: "MySQL",
-        detail: "url with parameters",
-        url: "jdbc:mysql://127.0.0.1:1234/my_database?user=username&password=password&parameter1=value1&parameter2=value2",
-        oldUrl:
-          "jdbc:mysql://localhost:7896/old_database?user=username&password=password&parameter1=value1&parameter2=value2",
-      },
-      {
-        driver: "MS SQL",
-        detail: "url with parameters",
-        url: "jdbc:sqlserver://127.0.0.1:1234;databaseName=my_database;user=username;password=password;parameter1=value1;parameter2=value2",
-        oldUrl:
-          "jdbc:sqlserver://localhost:7896;databaseName=old_database;user=username;password=password;parameter1=value1;parameter2=value2",
-      },
-      {
-        driver: "MS SQL",
-        detail: "url without parameters",
-        url: "jdbc:sqlserver://127.0.0.1:1234;databaseName=my_database",
-        oldUrl: "jdbc:sqlserver://localhost:7896;databaseName=old_database",
-      },
-      {
-        driver: "Oracle",
-        detail: "url with parameters",
-        url: "jdbc:oracle:thin:@127.0.0.1:1234:my_database?user=username&password=password&parameter1=value1&parameter2=value2",
-        oldUrl:
-          "jdbc:oracle:thin:@localhost:7896:old_database?user=username&password=password&parameter1=value1&parameter2=value2",
-      },
-      {
-        driver: "PostgreSQL",
-        detail: "url with parameters",
-        url: "jdbc:postgresql://127.0.0.1:1234/my_database?user=username&password=password&parameter1=value1&parameter2=value2",
-        oldUrl:
-          "jdbc:postgresql://localhost:7896/old_database?user=username&password=password&parameter1=value1&parameter2=value2",
-      },
-    ];
+  const testCases: TestCase[] = [
+    {
+      driver: "MariaDB",
+      detail: "url with parameters",
+      url: "jdbc:mariadb://127.0.0.1:1234/my_database?user=username&password=password&parameter1=value1&parameter2=value2",
+      oldUrl:
+        "jdbc:mariadb://localhost:7896/old_database?user=username&password=password&parameter1=value1&parameter2=value2",
+    },
+    {
+      driver: "MariaDB",
+      detail: "url without parameters",
+      url: "jdbc:mariadb://127.0.0.1:1234/my_database",
+      oldUrl: "jdbc:mariadb://localhost:7896/old_database",
+    },
+    {
+      driver: "MySQL",
+      detail: "url with parameters",
+      url: "jdbc:mysql://127.0.0.1:1234/my_database?user=username&password=password&parameter1=value1&parameter2=value2",
+      oldUrl:
+        "jdbc:mysql://localhost:7896/old_database?user=username&password=password&parameter1=value1&parameter2=value2",
+    },
+    {
+      driver: "MS SQL",
+      detail: "url with parameters",
+      url: "jdbc:sqlserver://127.0.0.1:1234;databaseName=my_database;user=username;password=password;parameter1=value1;parameter2=value2",
+      oldUrl:
+        "jdbc:sqlserver://localhost:7896;databaseName=old_database;user=username;password=password;parameter1=value1;parameter2=value2",
+    },
+    {
+      driver: "MS SQL",
+      detail: "url without parameters",
+      url: "jdbc:sqlserver://127.0.0.1:1234;databaseName=my_database",
+      oldUrl: "jdbc:sqlserver://localhost:7896;databaseName=old_database",
+    },
+    {
+      driver: "Oracle",
+      detail: "url with parameters",
+      url: "jdbc:oracle:thin:@127.0.0.1:1234:my_database?user=username&password=password&parameter1=value1&parameter2=value2",
+      oldUrl:
+        "jdbc:oracle:thin:@localhost:7896:old_database?user=username&password=password&parameter1=value1&parameter2=value2",
+    },
+    {
+      driver: "PostgreSQL",
+      detail: "url with parameters",
+      url: "jdbc:postgresql://127.0.0.1:1234/my_database?user=username&password=password&parameter1=value1&parameter2=value2",
+      oldUrl:
+        "jdbc:postgresql://localhost:7896/old_database?user=username&password=password&parameter1=value1&parameter2=value2",
+    },
+  ];
 
+  /**
+   * Checks if there are test cases for every driver.
+   */
+  test("should have test cases for every driver", () => {
+    // gets all drivers from the test cases, distinct and sort them
+    const testCaseDrivers = Array.from(new Set(testCases.map((pCase) => pCase.driver))).sort((a, b) =>
+      a.localeCompare(b)
+    );
+
+    assert.deepStrictEqual(
+      Array.from(PREDEFINED_DRIVERS.keys()).sort((a, b) => a.localeCompare(b)),
+      testCaseDrivers
+    );
+  });
+
+  testCases.forEach((pCase) => {
     /**
-     * Checks if there are test cases for every driver.
+     * Makes tests for any test case of the drivers regarding extracting and building urls.
      */
-    test("should have test cases for every driver", () => {
-      // gets all drivers from the test cases, distinct and sort them
-      const testCaseDrivers = Array.from(new Set(testCases.map((pCase) => pCase.driver))).sort((a, b) =>
-        a.localeCompare(b)
-      );
-
-      assert.deepStrictEqual(
-        Array.from(PREDEFINED_DRIVERS.keys()).sort((a, b) => a.localeCompare(b)),
-        testCaseDrivers
-      );
-    });
-
-    testCases.forEach((pCase) => {
+    suite(`url handling of pre-configured drivers: Database ${pCase.driver} (${pCase.detail})`, () => {
       /**
-       * Makes tests for any test case of the drivers regarding extracting and building urls.
+       * The driver for the tests. This will be extracted in `suiteSetup`.
        */
-      suite(`Database ${pCase.driver} (${pCase.detail})`, () => {
-        /**
-         * The driver for the tests. This will be extracted in `suiteSetup`.
-         */
-        let driver: Driver;
+      let driver: Driver;
 
-        /**
-         * The url parts that should be used in any test.
-         */
-        const urlParts: UrlParts = {
-          serverAddress: "127.0.0.1",
-          port: 1234,
-          databaseName: "my_database",
-        };
+      /**
+       * The url parts that should be used in any test.
+       */
+      const urlParts: UrlParts = {
+        serverAddress: "127.0.0.1",
+        port: 1234,
+        databaseName: "my_database",
+      };
 
-        /**
-         * Gets the pre-configured driver from the `PREDEFINED_DRIVERS` map. If any driver is not there, then this suite will fail.
-         */
-        suiteSetup("get driver from map", () => {
-          assert.ok(PREDEFINED_DRIVERS.has(pCase.driver));
-          const driverFromMap = PREDEFINED_DRIVERS.get(pCase.driver);
-          if (driverFromMap) {
-            driver = driverFromMap;
-          } else {
-            fail(`Driver ${pCase} was not found in the map of all drivers`);
-          }
-        });
+      /**
+       * Gets the pre-configured driver from the `PREDEFINED_DRIVERS` map. If any driver is not there, then this suite will fail.
+       */
+      suiteSetup("get driver from map", () => {
+        assert.ok(PREDEFINED_DRIVERS.has(pCase.driver));
+        const driverFromMap = PREDEFINED_DRIVERS.get(pCase.driver);
+        if (driverFromMap) {
+          driver = driverFromMap;
+        } else {
+          fail(`Driver ${pCase} was not found in the map of all drivers`);
+        }
+      });
 
-        /**
-         * Tests the extraction of the url parts for this driver.
-         */
-        test("extractUrlParts", () => {
-          assert.deepStrictEqual(urlParts, driver.extractUrlParts(pCase.url));
-        });
+      /**
+       * Tests the extraction of the url parts for this driver.
+       */
+      test("extractUrlParts", () => {
+        assert.deepStrictEqual(urlParts, driver.extractUrlParts(pCase.url));
+      });
 
-        /**
-         * Tests the building of the url.
-         * This method will always have an old url and no need to use any fallback elements for the url.
-         */
-        test("buildUrl", () => {
-          assert.strictEqual(
-            pCase.url,
-            driver.buildUrl(pCase.oldUrl, urlParts, "fallbackServerAddress", 8520, "fallback_database")
-          );
-        });
+      /**
+       * Tests the building of the url.
+       * This method will always have an old url and no need to use any fallback elements for the url.
+       */
+      test("buildUrl", () => {
+        assert.strictEqual(
+          pCase.url,
+          driver.buildUrl(pCase.oldUrl, urlParts, "fallbackServerAddress", 8520, "fallback_database")
+        );
       });
     });
+  });
+
+  /**
+   * The test cases for the pre-configured drivers
+   */
+  interface TestCase {
+    /**
+     * The name of the driver. This is also the key of the `PREDEFINED_DRIVERS` map.
+     */
+    driver: string;
 
     /**
-     * The test cases for the pre-configured drivers
+     * Any detail for this test case. This will be added to the name of the suite.
      */
-    interface TestCase {
-      /**
-       * The name of the driver. This is also the key of the `PREDEFINED_DRIVERS` map.
-       */
-      driver: string;
+    detail: string;
 
-      /**
-       * Any detail for this test case. This will be added to the name of the suite.
-       */
-      detail: string;
+    /**
+     * The url that should be used for extracting and also be the result of building.
+     */
+    url: string;
 
-      /**
-       * The url that should be used for extracting and also be the result of building.
-       */
-      url: string;
-
-      /**
-       * The old url that should be given for building the url.
-       */
-      oldUrl: string;
-    }
-  });
+    /**
+     * The old url that should be given for building the url.
+     */
+    oldUrl: string;
+  }
 });
