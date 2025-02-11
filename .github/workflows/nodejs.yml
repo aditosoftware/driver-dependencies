@@ -74,7 +74,7 @@ jobs:
         run: nyc --reporter lcovonly npm run test -- --reporter mocha-multi-reporters  --reporter-options configFile=config.json
 
       - name: Analyze with SonarCloud
-        uses: SonarSource/sonarcloud-github-action@master
+        uses: SonarSource/sonarqube-scan-action@v4
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
