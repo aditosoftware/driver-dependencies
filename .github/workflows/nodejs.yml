@@ -28,7 +28,7 @@ jobs:
             node_modules-${{ matrix.os }}-node-${{ matrix.node-version }}
 
       - name: Run clean install
-        run: npm ci
+        run: npm ci --ignore-scripts
 
       - name: Run tests
         run: npm test
@@ -60,9 +60,9 @@ jobs:
         run: npm run lint -- --format json --output-file eslint-results.json || true
 
       - name: Install Coverage Reporters
-        run: npm install -g nyc
+        run: npm install --ignore-scripts -g nyc
       - name: Install Mocha reporters
-        run: npm install -d mocha-multi-reporters mocha-junit-reporter mocha-sonarqube-reporter
+        run: npm install --ignore-scripts -d mocha-multi-reporters mocha-junit-reporter mocha-sonarqube-reporter
       - name: create mocha config
         run: |
           echo '{
