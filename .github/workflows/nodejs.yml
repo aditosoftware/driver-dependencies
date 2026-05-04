@@ -59,18 +59,8 @@ jobs:
       - name: Run ESLint
         run: npm run lint -- --format json --output-file eslint-results.json || true
 
-      - name: Install Coverage Reporters
-        run: npm install --ignore-scripts -g nyc
-      - name: Install Mocha reporters
-        run: npm install --ignore-scripts -d mocha-multi-reporters mocha-junit-reporter mocha-sonarqube-reporter
-      - name: create mocha config
-        run: |
-          echo '{
-            "reporterEnabled": "spec, mocha-junit-reporter, mocha-sonarqube-reporter"
-          }' > config.json
-
       - name: Run tests with coverage
-        run: nyc --reporter lcovonly npm run test -- --reporter mocha-multi-reporters  --reporter-options configFile=config.json
+        run: npm run coverage-lcovonly
 
       - name: Analyze with SonarCloud
         uses: SonarSource/sonarqube-scan-action@v7.1.0
