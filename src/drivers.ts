@@ -170,7 +170,7 @@ export const PREDEFINED_DRIVERS = new Map<string, Driver>([
     "PostgreSQL",
     new Driver(
       "org.postgresql.Driver",
-      "https://repo1.maven.org/maven2/org/postgresql/postgresql/42.6.0/postgresql-42.6.0.jar",
+      "https://repo1.maven.org/maven2/org/postgresql/postgresql/42.7.11/postgresql-42.7.11.jar",
       "jdbc:postgresql://",
       5432,
       "/",
