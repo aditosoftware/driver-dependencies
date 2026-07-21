@@ -4,6 +4,12 @@ All notable changes to the "driver-dependencies" dependency will be documented i
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 1.0.6
+
+### Changed
+
+- Updated PostgreSQL driver dependencies to 42.7.11
+
 ## 1.0.5
 
 ### Changed

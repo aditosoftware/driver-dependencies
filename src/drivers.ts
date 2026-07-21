@@ -30,9 +30,15 @@ export class Driver {
     public readonly jdbcName: string,
     public readonly port: number,
     public readonly separator: string,
-    private readonly extractDatabaseNameFromUrl: (url: string, driver: Driver) => DatabaseNameExtraction,
-    private readonly buildDatabaseName: (driver: Driver, databaseName: string) => string,
-    private readonly extractParameters: (oldUrl: string) => string
+    private readonly extractDatabaseNameFromUrl: (
+      url: string,
+      driver: Driver,
+    ) => DatabaseNameExtraction,
+    private readonly buildDatabaseName: (
+      driver: Driver,
+      databaseName: string,
+    ) => string,
+    private readonly extractParameters: (oldUrl: string) => string,
   ) {}
 
   /**
@@ -46,10 +52,15 @@ export class Driver {
     const urlToCheck = url.replace(this.jdbcName, "");
 
     // extract the database name
-    const databaseNameExtraction = this.extractDatabaseNameFromUrl(urlToCheck, this);
+    const databaseNameExtraction = this.extractDatabaseNameFromUrl(
+      urlToCheck,
+      this,
+    );
 
     // take the url without the database name and splits by :
-    const parts = urlToCheck.substring(0, databaseNameExtraction.index).split(":");
+    const parts = urlToCheck
+      .substring(0, databaseNameExtraction.index)
+      .split(":");
 
     if (parts.length === 2) {
       // extract server address and port from the parts, if there were the right amount of parts
@@ -82,7 +93,7 @@ export class Driver {
     newValues: UrlParts,
     serverAddress: string,
     port: number,
-    databaseName: string
+    databaseName: string,
   ): string {
     // extract parameters from the old url
     let parameters = "";
@@ -91,7 +102,10 @@ export class Driver {
     }
 
     // build the database name for the the driver
-    const builtDatabaseName = this.buildDatabaseName(this, newValues.databaseName ?? databaseName);
+    const builtDatabaseName = this.buildDatabaseName(
+      this,
+      newValues.databaseName ?? databaseName,
+    );
 
     // and build the url
     return `${this.jdbcName}${newValues.serverAddress ?? serverAddress}:${
@@ -131,7 +145,7 @@ export const PREDEFINED_DRIVERS = new Map<string, Driver>([
       "/",
       extractDatabaseNameBySeparator,
       buildDatabaseNameBySeparator,
-      extractParameters
+      extractParameters,
     ),
   ],
 
@@ -146,7 +160,7 @@ export const PREDEFINED_DRIVERS = new Map<string, Driver>([
       "/",
       extractDatabaseNameBySeparator,
       buildDatabaseNameBySeparator,
-      extractParameters
+      extractParameters,
     ),
   ],
 
@@ -161,7 +175,7 @@ export const PREDEFINED_DRIVERS = new Map<string, Driver>([
       ";",
       extractDatabaseNameForMsSQL,
       buildDatabaseNameForMsSQL,
-      extractParametersForMsSQL
+      extractParametersForMsSQL,
     ),
   ],
 
@@ -170,13 +184,13 @@ export const PREDEFINED_DRIVERS = new Map<string, Driver>([
     "PostgreSQL",
     new Driver(
       "org.postgresql.Driver",
-      "https://repo1.maven.org/maven2/org/postgresql/postgresql/42.6.0/postgresql-42.6.0.jar",
+      "https://repo1.maven.org/maven2/org/postgresql/postgresql/42.7.11/postgresql-42.7.11.jar",
       "jdbc:postgresql://",
       5432,
       "/",
       extractDatabaseNameBySeparator,
       buildDatabaseNameBySeparator,
-      extractParameters
+      extractParameters,
     ),
   ],
 
@@ -191,7 +205,7 @@ export const PREDEFINED_DRIVERS = new Map<string, Driver>([
       ":",
       extractDatabaseNameBySeparator,
       buildDatabaseNameBySeparator,
-      extractParameters
+      extractParameters,
     ),
   ],
 ]);
@@ -203,7 +217,10 @@ export const PREDEFINED_DRIVERS = new Map<string, Driver>([
  * @param driver - the driver for which the extraction should be done
  * @returns the extracted database name
  */
-export function extractDatabaseNameBySeparator(url: string, driver: Driver): DatabaseNameExtraction {
+export function extractDatabaseNameBySeparator(
+  url: string,
+  driver: Driver,
+): DatabaseNameExtraction {
   // find out where last occurrence of the separator is...
   const separatorIndex = url.lastIndexOf(driver.separator);
 
@@ -225,7 +242,10 @@ export function extractDatabaseNameBySeparator(url: string, driver: Driver): Dat
  * @param databaseName - the name of the database
  * @returns the name of the database with the separator
  */
-export function buildDatabaseNameBySeparator(driver: Driver, databaseName: string): string {
+export function buildDatabaseNameBySeparator(
+  driver: Driver,
+  databaseName: string,
+): string {
   return `${driver.separator}${databaseName}`;
 }
 
@@ -252,7 +272,10 @@ export function extractParameters(oldUrl: string): string {
  * @param driver - the driver for which the extraction should be done
  * @returns the extracted database name
  */
-function extractDatabaseNameForMsSQL(url: string, driver: Driver): DatabaseNameExtraction {
+function extractDatabaseNameForMsSQL(
+  url: string,
+  driver: Driver,
+): DatabaseNameExtraction {
   const parameterSeparatorIndex = url.indexOf(";");
   // get all parameters of the url (which should include the database name)
   const parameters = url.substring(parameterSeparatorIndex + 1);
@@ -276,7 +299,10 @@ function extractDatabaseNameForMsSQL(url: string, driver: Driver): DatabaseNameE
  * @param databaseName - the name of the database
  * @returns the name of the database for MS SQL
  */
-function buildDatabaseNameForMsSQL(driver: Driver, databaseName: string): string {
+function buildDatabaseNameForMsSQL(
+  driver: Driver,
+  databaseName: string,
+): string {
   return `${driver.separator}databaseName=${databaseName}`;
 }
 
