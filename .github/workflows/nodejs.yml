@@ -70,5 +70,5 @@ jobs:
           args: -Dsonar.projectKey=aditosoftware_driver-dependencies
             -Dsonar.organization=aditosoftware
             -Dsonar.eslint.reportPaths=eslint-results.json
-            -Dsonar.testExecutionReportPaths=xunit.xml
+            -Dsonar.testExecutionReportPaths=sonar-test-results.xml
             -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
