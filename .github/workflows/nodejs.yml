@@ -9,7 +9,7 @@ jobs:
   build:
     strategy:
       matrix:
-        node-version: [18.x, 20.x, 22.x]
+        node-version: [22.x, 24.x, 26.x]
         os: [macos-latest, ubuntu-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
@@ -70,5 +70,5 @@ jobs:
           args: -Dsonar.projectKey=aditosoftware_driver-dependencies
             -Dsonar.organization=aditosoftware
             -Dsonar.eslint.reportPaths=eslint-results.json
-            -Dsonar.testExecutionReportPaths=xunit.xml
+            -Dsonar.testExecutionReportPaths=sonar-test-results.xml
             -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
