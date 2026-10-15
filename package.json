@@ -30,9 +30,8 @@
     "@types/node": "26.x",
     "assert": "^2.1.0",
     "c8": "^12.0.0",
-    "mocha": "^11.0.1",
-    "mocha-junit-reporter": "^2.2.1",
-    "mocha-multi-reporters": "^1.5.1",
+    "mocha": "^12.0.2",
+    "mocha-multi-reporters": "^1.5.2",
     "mocha-sonarqube-reporter": "^1.0.2",
     "rimraf": "^6.0.1",
     "typescript": "^5.3.3"
