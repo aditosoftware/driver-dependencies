@@ -49,22 +49,22 @@ export class Driver {
     const databaseNameExtraction = this.extractDatabaseNameFromUrl(urlToCheck, this);
 
     // take the url without the database name and splits by :
-    const parts = urlToCheck.substring(0, databaseNameExtraction.index).split(":");
+    const parts = urlToCheck.slice(0, Math.max(0, databaseNameExtraction.index)).split(":");
 
     if (parts.length === 2) {
       // extract server address and port from the parts, if there were the right amount of parts
       const serverAddress = parts[0];
-      const port = parseInt(parts[1]);
+      const port = Number.parseInt(parts[1]);
 
       return {
         serverAddress,
         port,
         databaseName: databaseNameExtraction.databaseName,
       };
-    } else {
-      // otherwise, just return the port
-      return { port: this.port };
     }
+
+    // otherwise, just return the port
+    return { port: this.port };
   }
 
   /**
@@ -208,10 +208,10 @@ export function extractDatabaseNameBySeparator(url: string, driver: Driver): Dat
   const separatorIndex = url.lastIndexOf(driver.separator);
 
   // ... and extract the database name from it
-  let databaseName = url.substring(separatorIndex + 1);
+  let databaseName = url.slice(Math.max(0, separatorIndex + 1));
   if (databaseName.includes("?")) {
     // remove any parameters from the database name
-    databaseName = databaseName.substring(0, databaseName.indexOf("?"));
+    databaseName = databaseName.slice(0, databaseName.indexOf("?"));
   }
 
   return { index: separatorIndex, databaseName };
@@ -238,7 +238,7 @@ export function buildDatabaseNameBySeparator(driver: Driver, databaseName: strin
  */
 export function extractParameters(oldUrl: string): string {
   if (oldUrl.includes("?")) {
-    return oldUrl.substring(oldUrl.indexOf("?"));
+    return oldUrl.slice(Math.max(0, oldUrl.indexOf("?")));
   }
   return "";
 }
@@ -255,7 +255,7 @@ export function extractParameters(oldUrl: string): string {
 function extractDatabaseNameForMsSQL(url: string, driver: Driver): DatabaseNameExtraction {
   const parameterSeparatorIndex = url.indexOf(";");
   // get all parameters of the url (which should include the database name)
-  const parameters = url.substring(parameterSeparatorIndex + 1);
+  const parameters = url.slice(Math.max(0, parameterSeparatorIndex + 1));
 
   // filter the parameters to find out the database name
   const databaseName = parameters
@@ -263,7 +263,7 @@ function extractDatabaseNameForMsSQL(url: string, driver: Driver): DatabaseNameE
     // find the parameter that starts with databaseName
     .filter((pParameter) => pParameter.startsWith("databaseName"))
     // extract the value of the parameter
-    .map((pParameter) => pParameter.substring(pParameter.indexOf("=") + 1))
+    .map((pParameter) => pParameter.slice(Math.max(0, pParameter.indexOf("=") + 1)))
     .join("");
 
   return { index: parameterSeparatorIndex, databaseName };
@@ -289,7 +289,7 @@ function buildDatabaseNameForMsSQL(driver: Driver, databaseName: string): string
  */
 function extractParametersForMsSQL(oldUrl: string): string {
   if (oldUrl.includes(";")) {
-    const allParameters = oldUrl.substring(oldUrl.indexOf(";") + 1);
+    const allParameters = oldUrl.slice(Math.max(0, oldUrl.indexOf(";") + 1));
 
     const newParameters = allParameters
       .split(";")
