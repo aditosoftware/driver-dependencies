@@ -155,7 +155,7 @@ export const PREDEFINED_DRIVERS = new Map<string, Driver>([
     "MS SQL",
     new Driver(
       "com.microsoft.sqlserver.jdbc.SQLServerDriver",
-      "https://repo1.maven.org/maven2/com/microsoft/sqlserver/mssql-jdbc/12.2.0.jre11/mssql-jdbc-12.2.0.jre11.jar",
+      "https://repo1.maven.org/maven2/com/microsoft/sqlserver/mssql-jdbc/12.2.1.jre11/mssql-jdbc-12.2.1.jre11.jar",
       "jdbc:sqlserver://",
       1443,
       ";",
@@ -170,7 +170,7 @@ export const PREDEFINED_DRIVERS = new Map<string, Driver>([
     "PostgreSQL",
     new Driver(
       "org.postgresql.Driver",
-      "https://repo1.maven.org/maven2/org/postgresql/postgresql/42.7.11/postgresql-42.7.11.jar",
+      "https://repo1.maven.org/maven2/org/postgresql/postgresql/42.7.14/postgresql-42.7.14.jar",
       "jdbc:postgresql://",
       5432,
       "/",
