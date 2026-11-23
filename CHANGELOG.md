@@ -4,6 +4,8 @@ All notable changes to the "driver-dependencies" dependency will be documented i
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## X.X.X
+
 ## 1.0.7
 
 - Updated PostgreSQL & MSSQL driver dependencies
